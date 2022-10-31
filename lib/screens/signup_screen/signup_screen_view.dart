@@ -1,5 +1,6 @@
 import 'package:firebaseauthentication/screens/home_screen/home_screen_view.dart';
 import 'package:firebaseauthentication/services/firebase_authentication_service.dart';
+import 'package:firebaseauthentication/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -15,10 +16,19 @@ class _SignupScreenViewState extends State<SignupScreenView> {
   TextEditingController lastName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool isObscureTextPassword = true;
+
+  changeIsObscureTextPassword() {
+    setState(() {
+      isObscureTextPassword = !isObscureTextPassword;
+    });
+  }
 
   signUp() async {
-    bool result = await FirebaseAuthenticationService()
-        .signUp(email: email.text, password: password.text);
+    bool result = await FirebaseAuthenticationService().signUp(
+      email: email.text,
+      password: password.text,
+    );
 
     if (result) {
       Navigator.pushReplacement(
@@ -63,86 +73,41 @@ class _SignupScreenViewState extends State<SignupScreenView> {
                 children: [
                   SizedBox(
                     width: 40.w,
-                    child: TextField(
+                    child: CustomTextField(
                       controller: firstName,
-                      style: TextStyle(
-                        fontSize: 17.sp,
-                      ),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(
-                          top: 4.w,
-                          bottom: 4.w,
-                          left: 5.w,
-                        ),
-                        hintText: "First Name",
-                        hintStyle: TextStyle(
-                          fontSize: 17.sp,
-                        ),
-                      ),
+                      obscureText: false,
+                      hintText: "First Name",
                     ),
                   ),
                   SizedBox(
                     width: 40.w,
-                    child: TextField(
+                    child: CustomTextField(
                       controller: lastName,
-                      style: TextStyle(
-                        fontSize: 17.sp,
-                      ),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(
-                          top: 4.w,
-                          bottom: 4.w,
-                          left: 5.w,
-                        ),
-                        hintText: "Last Name",
-                        hintStyle: TextStyle(
-                          fontSize: 17.sp,
-                        ),
-                      ),
+                      obscureText: false,
+                      hintText: "Last Name",
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 2.5.h),
-              TextField(
+              CustomTextField(
                 controller: email,
-                style: TextStyle(
-                  fontSize: 17.sp,
-                ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.only(
-                    top: 4.w,
-                    bottom: 4.w,
-                    left: 5.w,
-                  ),
-                  hintText: "Email",
-                  hintStyle: TextStyle(
-                    fontSize: 17.sp,
-                  ),
-                  suffixIcon: const Icon(Icons.email),
-                ),
+                obscureText: false,
+                hintText: "Email",
+                suffixIcon: const Icon(Icons.email),
               ),
               SizedBox(height: 2.5.h),
-              TextField(
+              CustomTextField(
                 controller: password,
-                style: TextStyle(
-                  fontSize: 17.sp,
-                ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.only(
-                    top: 4.w,
-                    bottom: 4.w,
-                    left: 5.w,
+                obscureText: isObscureTextPassword,
+                hintText: "Password",
+                suffixIcon: GestureDetector(
+                  onTap: () => changeIsObscureTextPassword(),
+                  child: Icon(
+                    isObscureTextPassword == true
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                   ),
-                  hintText: "Password",
-                  hintStyle: TextStyle(
-                    fontSize: 17.sp,
-                  ),
-                  suffixIcon: const Icon(Icons.visibility_off),
                 ),
               ),
               SizedBox(height: 5.h),
