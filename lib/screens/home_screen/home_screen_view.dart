@@ -1,5 +1,6 @@
 import 'package:firebaseauthentication/screens/signin_screen/signin_screen_view.dart';
 import 'package:firebaseauthentication/services/firebase_authentication_service.dart';
+import 'package:firebaseauthentication/shared/shared_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -12,13 +13,26 @@ class HomeScreenView extends StatefulWidget {
 
 class _HomeScreenViewState extends State<HomeScreenView> {
   signOut() async {
-    await FirebaseAuthenticationService().signOut();
+    showSharedDialog(
+      context: context,
+      barrierDismissible: true,
+      title: const Text("Confirm Sign out"),
+      content: const Text("Are you sure you want to sign out?"),
+      actionFunction1: () => Navigator.pop(context),
+      actionLabel1: const Text("Cancel"),
+      actionFunction2: () async {
+        Navigator.pop(context);
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SigninScreenView(),
-      ),
+        await FirebaseAuthenticationService().signOut();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SigninScreenView(),
+          ),
+        );
+      },
+      actionLabel2: const Text("Sign out"),
     );
   }
 
@@ -56,7 +70,10 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                       horizontal: 2.5.w,
                     ),
                     child: Text(
-                      "John Doe",
+                      FirebaseAuthenticationService()
+                          .auth
+                          .currentUser!
+                          .displayName!,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.sp,
@@ -67,9 +84,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
               ),
             ),
             ListTile(
-              onTap: () {
-                signOut();
-              },
+              onTap: () => signOut(),
               leading: const Icon(Icons.logout),
               title: Text(
                 "Sign out",

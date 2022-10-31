@@ -6,7 +6,7 @@ showSharedSnackbar({
   required String title,
   required String message,
 }) {
-  return AppGlobals.snackbarKey.currentState!.showSnackBar(
+  return scaffoldMessengerKey.currentState!.showSnackBar(
     SnackBar(
       width: 95.w,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

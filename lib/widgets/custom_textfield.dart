@@ -25,6 +25,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextField(
       controller: widget.controller,
       obscureText: widget.obscureText,
+      autocorrect: false,
+      enableSuggestions: false,
+      cursorColor: Theme.of(context).primaryColor,
+      keyboardType: TextInputType.visiblePassword,
       style: TextStyle(
         fontSize: 17.sp,
       ),

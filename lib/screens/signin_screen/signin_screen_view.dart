@@ -1,6 +1,8 @@
 import 'package:firebaseauthentication/screens/home_screen/home_screen_view.dart';
 import 'package:firebaseauthentication/screens/signup_screen/signup_screen_view.dart';
 import 'package:firebaseauthentication/services/firebase_authentication_service.dart';
+import 'package:firebaseauthentication/shared/shared_loading.dart';
+import 'package:firebaseauthentication/shared/shared_snackbar.dart';
 import 'package:firebaseauthentication/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -24,12 +26,41 @@ class _SigninScreenViewState extends State<SigninScreenView> {
     });
   }
 
+  resetTextFields() {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    email.clear();
+    password.clear();
+
+    setState(() {
+      isObscureTextPassword = true;
+    });
+  }
+
   signIn() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    // Checks if there is no input for email and password
+    if (email.text.isEmpty || password.text.isEmpty) {
+      showSharedSnackbar(
+        title: "Invalid Input",
+        message: "Please fill in all the fields.",
+      );
+
+      return;
+    }
+
+    showSharedLoading(context: context);
+
+    // Calls firebase function for signin
     bool result = await FirebaseAuthenticationService().signIn(
       email: email.text,
       password: password.text,
     );
 
+    Navigator.pop(context);
+
+    // If the firebase signin is true then navigate to home screen
     if (result) {
       Navigator.pushReplacement(
         context,
@@ -43,9 +74,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: appBar(context),
         body: Container(
@@ -82,7 +111,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                 suffixIcon: GestureDetector(
                   onTap: () => changeIsObscureTextPassword(),
                   child: Icon(
-                    isObscureTextPassword == true
+                    isObscureTextPassword
                         ? Icons.visibility_off
                         : Icons.visibility,
                   ),
@@ -108,6 +137,8 @@ class _SigninScreenViewState extends State<SigninScreenView> {
                               builder: (context) => const SignupScreenView(),
                             ),
                           );
+
+                          resetTextFields();
                         },
                       text: " Sign up",
                       style: TextStyle(
@@ -120,9 +151,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
               ),
               SizedBox(height: 3.h),
               ElevatedButton(
-                onPressed: () {
-                  signIn();
-                },
+                onPressed: () => signIn(),
                 child: Text(
                   "Sign in",
                   style: TextStyle(

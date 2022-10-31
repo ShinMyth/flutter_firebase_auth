@@ -25,7 +25,15 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: "Flutter Firebase Authentication",
           home: const SplashScreenView(),
-          scaffoldMessengerKey: AppGlobals.snackbarKey,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          theme: Theme.of(context).copyWith(
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+              },
+            ),
+          ),
         );
       },
     );

@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseauthentication/shared/shared_snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthenticationService {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -76,6 +76,13 @@ class FirebaseAuthenticationService {
 
       return false;
     }
+  }
+
+  Future<void> updateDisplayName({
+    required String firstName,
+    required String lastName,
+  }) async {
+    await auth.currentUser!.updateDisplayName("$firstName $lastName");
   }
 
   Future<void> signOut() async {
