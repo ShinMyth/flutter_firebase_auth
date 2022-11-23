@@ -20,13 +20,13 @@ class _SigninScreenViewState extends State<SigninScreenView> {
   TextEditingController password = TextEditingController();
   bool isObscureTextPassword = true;
 
-  changeIsObscureTextPassword() {
+  void changeIsObscureTextPassword() {
     setState(() {
       isObscureTextPassword = !isObscureTextPassword;
     });
   }
 
-  resetTextFields() {
+  void resetTextFields() {
     FocusManager.instance.primaryFocus?.unfocus();
 
     email.clear();
@@ -37,7 +37,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
     });
   }
 
-  signIn() async {
+  void signIn() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     // Checks if there is no input for email and password
