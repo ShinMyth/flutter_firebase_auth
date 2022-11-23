@@ -78,10 +78,8 @@ class FirebaseAuthenticationService {
     }
   }
 
-  Future<void> updateDisplayName({
-    required String firstName,
-    required String lastName,
-  }) async {
+  Future<void> updateDisplayName(
+      {required String firstName, required String lastName}) async {
     await auth.currentUser!.updateDisplayName("$firstName $lastName");
   }
 

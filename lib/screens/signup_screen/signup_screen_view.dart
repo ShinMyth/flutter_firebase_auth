@@ -20,13 +20,13 @@ class _SignupScreenViewState extends State<SignupScreenView> {
   TextEditingController password = TextEditingController();
   bool isObscureTextPassword = true;
 
-  changeIsObscureTextPassword() {
+  void changeIsObscureTextPassword() {
     setState(() {
       isObscureTextPassword = !isObscureTextPassword;
     });
   }
 
-  signUp() async {
+  void signUp() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     // Checks if there is no input for firstName, lastName, email and password

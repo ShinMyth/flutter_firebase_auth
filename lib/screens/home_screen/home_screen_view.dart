@@ -12,7 +12,7 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  signOut() async {
+  void signOut() {
     showSharedDialog(
       context: context,
       barrierDismissible: true,
